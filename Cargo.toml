@@ -4,3 +4,8 @@ version = "0.1.0"
 authors = ["Vasya Novikov <n1dr+cm3513git@ya.ru>"]
 
 [dependencies]
+
+[profile.release]
+# To bulid with musl: cargo build --target=x86_64-unknown-linux-musl --release
+lto = true
+#rpath = false
