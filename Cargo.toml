@@ -1,5 +1,6 @@
 [package]
 name = "wwrap"
 version = "0.1.0"
+authors = ["Vasya Novikov <n1dr+cm3513git@ya.ru>"]
 
 [dependencies]

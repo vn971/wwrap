@@ -4,7 +4,7 @@ use std::process::Command;
 use std::env;
 use std::collections::HashSet;
 use std::ops::Deref;
-use std::ffi::{OsString};
+use std::ffi::OsString;
 use std::os::unix::process::CommandExt;
 
 fn restore_env(cmd: &mut Command, env_var: &str) {
@@ -29,7 +29,6 @@ fn main() {
 	).collect();
 	eprintln!("Running command {:?} {:?}", env::args().nth(1).unwrap(), cleaned_args);
 
-//	let mut command = Command::new(env::args().nth(1).unwrap());
 	let mut command = Command::new("bwrap");
 	let command: &mut Command = command.args(cleaned_args);
 
