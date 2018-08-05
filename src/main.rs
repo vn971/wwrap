@@ -23,7 +23,7 @@ fn main() {
 	).collect();
 	//eprintln!("Running command {:?} {:?}", "bwrap", cleaned_args);
 
-	let mut command = Command::new("bwrap");
+	let mut command = Command::new(env::var("bwrap_path").unwrap_or("bwrap".to_string()));
 	let command: &mut Command = command.borrow_mut();
 
 	let arg_set: HashSet<_> = env::args().collect();
