@@ -1,11 +1,30 @@
 #!/usr/bin/env run-cargo-script
 
-use std::process::Command;
-use std::env;
-use std::collections::HashSet;
-use std::ops::Deref;
-use std::os::unix::process::CommandExt;
 use std::borrow::BorrowMut;
+use std::collections::HashSet;
+use std::env;
+use std::fs::File;
+use std::ops::Deref;
+use std::os::unix::io::IntoRawFd;
+use std::os::unix::process::CommandExt;
+use std::process::Command;
+
+extern crate libc;
+use libc::{ fcntl, F_GETFD, FD_CLOEXEC, F_SETFD };
+
+
+fn set_no_cloexec(file_descriptor: i32) {
+	unsafe {
+		let flags = fcntl(file_descriptor, F_GETFD);
+		if flags == -1 {
+			panic!("cannot get seccomp fd flags");
+		}
+		let flags = flags & !FD_CLOEXEC;
+		if fcntl(file_descriptor, F_SETFD, flags) == -1 {
+			panic!("cannot set seccomp fd flags");
+		}
+	}
+}
 
 fn main() {
 	let exclude_args: HashSet<_> = [
@@ -50,6 +69,14 @@ fn main() {
 	}
 	if !arg_set.contains("--ok-session") {
 		command.arg("--new-session");
+	}
+	if !arg_set.contains("--seccomp") {
+		let file = File::open("/home/vasya/.jails/seccomp.bpf").unwrap();
+		let file_descriptor = file.into_raw_fd();
+		// eprintln!("wwrap: seccomp file descriptor is {}", file_descriptor);
+		set_no_cloexec(file_descriptor);
+		command.arg("--seccomp");
+		command.arg(file_descriptor.to_string());
 	}
 	command.args(cleaned_args);
 
