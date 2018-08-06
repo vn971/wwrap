@@ -14,15 +14,13 @@ use libc::{ fcntl, F_GETFD, FD_CLOEXEC, F_SETFD };
 
 
 fn set_no_cloexec(file_descriptor: i32) {
-	unsafe {
-		let flags = fcntl(file_descriptor, F_GETFD);
-		if flags == -1 {
-			panic!("cannot get seccomp fd flags");
-		}
-		let flags = flags & !FD_CLOEXEC;
-		if fcntl(file_descriptor, F_SETFD, flags) == -1 {
-			panic!("cannot set seccomp fd flags");
-		}
+	let flags = unsafe { fcntl(file_descriptor, F_GETFD) };
+	if flags == -1 {
+		panic!("cannot get seccomp fd flags");
+	}
+	let flags = flags & !FD_CLOEXEC;
+	if unsafe { fcntl(file_descriptor, F_SETFD, flags) } == -1 {
+		panic!("cannot set seccomp fd flags");
 	}
 }
 
@@ -73,7 +71,6 @@ fn main() {
 	if !arg_set.contains("--seccomp") {
 		let file = File::open("/home/vasya/.jails/seccomp.bpf").unwrap();
 		let file_descriptor = file.into_raw_fd();
-		// eprintln!("wwrap: seccomp file descriptor is {}", file_descriptor);
 		set_no_cloexec(file_descriptor);
 		command.arg("--seccomp");
 		command.arg(file_descriptor.to_string());
