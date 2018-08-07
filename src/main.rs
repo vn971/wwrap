@@ -34,6 +34,7 @@ fn main() {
 		"--ok-cgroup",
 		"--ok-parent",
 		"--ok-session",
+		"--ok-seccomp",
 	].iter().cloned().collect();
 	let cleaned_args: Vec<_> = env::args().skip(1).filter(
 		|x| !exclude_args.contains(x.deref())
@@ -68,7 +69,7 @@ fn main() {
 	if !arg_set.contains("--ok-session") {
 		command.arg("--new-session");
 	}
-	if !arg_set.contains("--seccomp") {
+	if !arg_set.contains("--seccomp") && !arg_set.contains("--ok-seccomp") {
 		let file = File::open("/home/vasya/.jails/seccomp.bpf").unwrap();
 		let file_descriptor = file.into_raw_fd();
 		set_no_cloexec(file_descriptor);
