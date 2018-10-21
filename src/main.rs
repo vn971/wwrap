@@ -52,7 +52,7 @@ fn main() {
 	if !arg_set.contains("--ok-ipc") {
 		command.arg("--unshare-ipc");
 	}
-	if !arg_set.contains("--ok-user") {
+	if !arg_set.contains("--ok-user") && !arg_set.contains("--unshare-user-try") {
 		command.arg("--unshare-user");
 	}
 	if !arg_set.contains("--ok-pid") {
@@ -61,7 +61,7 @@ fn main() {
 	if !arg_set.contains("--ok-uts") {
 		command.arg("--unshare-uts");
 	}
-	if !arg_set.contains("--ok-cgroup") {
+	if !arg_set.contains("--ok-cgroup") && !arg_set.contains("--unshare-cgroup-try") {
 		command.arg("--unshare-cgroup");
 	}
 	if !arg_set.contains("--ok-parent") {
