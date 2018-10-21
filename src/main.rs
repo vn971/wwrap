@@ -35,6 +35,7 @@ fn main() {
 		"--ok-parent",
 		"--ok-session",
 		"--ok-seccomp",
+		"--ok-all-env", // compat with old versions of wwrap
 	].iter().cloned().collect();
 	let cleaned_args: Vec<_> = env::args().skip(1).filter(
 		|x| !exclude_args.contains(x.deref())
