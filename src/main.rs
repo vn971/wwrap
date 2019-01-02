@@ -40,7 +40,6 @@ fn main() {
 	let cleaned_args: Vec<_> = env::args().skip(1).filter(
 		|x| !exclude_args.contains(x.deref())
 	).collect();
-	//eprintln!("Running command {:?} {:?}", "bwrap", cleaned_args);
 
 	let mut command = Command::new(env::var("bwrap_path").unwrap_or("bwrap".to_string()));
 	let command: &mut Command = command.borrow_mut();
@@ -67,7 +66,7 @@ fn main() {
 	if !arg_set.contains("--ok-parent") {
 		command.arg("--die-with-parent");
 	}
-	if !arg_set.contains("--ok-session") {
+	if !arg_set.contains("--ok-session") && arg_set.contains("--ok-seccomp") {
 		command.arg("--new-session");
 	}
 	if !arg_set.contains("--seccomp") && !arg_set.contains("--ok-seccomp") {
