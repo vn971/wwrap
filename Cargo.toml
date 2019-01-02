@@ -2,6 +2,7 @@
 name = "wwrap"
 version = "0.1.0"
 authors = ["Vasya Novikov <n1dr+cm3513git@ya.ru>"]
+edition = "2018"
 
 [dependencies]
 libc = "0.2.42"
