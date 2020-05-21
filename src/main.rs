@@ -47,7 +47,7 @@ fn main() {
         .filter(|x| !exclude_args.contains(x.deref()))
         .collect();
 
-    let mut command = Command::new(env::var("bwrap_path").unwrap_or("bwrap".to_string()));
+    let mut command = Command::new(env::var("bwrap_path").unwrap_or_else(|_| "bwrap".to_string()));
     let command: &mut Command = command.borrow_mut();
 
     let arg_set: HashSet<_> = env::args().collect();
