@@ -1,5 +1,10 @@
 #!/usr/bin/env run-cargo-script
 
+extern crate libc;
+use libc::fcntl;
+use libc::FD_CLOEXEC;
+use libc::F_GETFD;
+use libc::F_SETFD;
 use std::borrow::BorrowMut;
 use std::collections::HashSet;
 use std::env;
@@ -8,9 +13,6 @@ use std::ops::Deref;
 use std::os::unix::io::IntoRawFd;
 use std::os::unix::process::CommandExt;
 use std::process::Command;
-
-extern crate libc;
-use libc::{fcntl, FD_CLOEXEC, F_GETFD, F_SETFD};
 
 fn set_no_cloexec(file_descriptor: i32) -> Result<(), String> {
     let flags = unsafe { fcntl(file_descriptor, F_GETFD) };
