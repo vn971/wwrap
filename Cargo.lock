@@ -2,15 +2,15 @@
 # It is not intended for manual editing.
 [[package]]
 name = "libc"
-version = "0.2.42"
+version = "0.2.70"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "wwrap"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
- "libc 0.2.42 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.70 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [metadata]
-"checksum libc 0.2.42 (registry+https://github.com/rust-lang/crates.io-index)" = "b685088df2b950fccadf07a7187c8ef846a959c142338a48f9dc0b94517eb5f1"
+"checksum libc 0.2.70 (registry+https://github.com/rust-lang/crates.io-index)" = "3baa92041a6fec78c687fa0cc2b3fae8884f743d672cf551bed1d6dac6988d0f"

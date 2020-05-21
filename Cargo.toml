@@ -1,11 +1,11 @@
 [package]
 name = "wwrap"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Vasya Novikov <n1dr+cm3513git@ya.ru>"]
 edition = "2018"
 
 [dependencies]
-libc = "0.2.42"
+libc = "0.2.70"
 
 [profile.release]
 # To bulid with musl: cargo build --target=x86_64-unknown-linux-musl --release
