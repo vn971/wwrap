@@ -13,15 +13,16 @@ extern crate libc;
 use libc::{ fcntl, F_GETFD, FD_CLOEXEC, F_SETFD };
 
 
-fn set_no_cloexec(file_descriptor: i32) {
+fn set_no_cloexec(file_descriptor: i32) -> Result<(), String> {
 	let flags = unsafe { fcntl(file_descriptor, F_GETFD) };
 	if flags == -1 {
-		panic!("cannot get seccomp fd flags");
+		return Err("cannot get seccomp fd flags".to_string())
 	}
 	let flags = flags & !FD_CLOEXEC;
 	if unsafe { fcntl(file_descriptor, F_SETFD, flags) } == -1 {
-		panic!("cannot set seccomp fd flags");
+		return Err("cannot set seccomp fd flags".to_string())
 	}
+	Ok(())
 }
 
 fn main() {
@@ -71,8 +72,8 @@ fn main() {
 	}
 	if !arg_set.contains("--seccomp") && !arg_set.contains("--ok-seccomp") {
 		let file = File::open("/home/vasya/.jails/seccomp.bpf").unwrap();
-		let file_descriptor = file.into_raw_fd();
-		set_no_cloexec(file_descriptor);
+		let file_descriptor: i32 = file.into_raw_fd();
+		set_no_cloexec(file_descriptor).expect("failed to set_no_cloexec");
 		command.arg("--seccomp");
 		command.arg(file_descriptor.to_string());
 	}
