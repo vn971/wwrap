@@ -1,8 +1,9 @@
 [package]
 name = "wwrap"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Vasya Novikov <n1dr+cm3513git@ya.ru>"]
 edition = "2018"
+publish = false
 
 [dependencies]
 libc = "0.2.74"
