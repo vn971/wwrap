@@ -76,7 +76,10 @@ fn main() {
         command.arg("--new-session");
     }
     if !arg_set.contains("--seccomp") && !arg_set.contains("--ok-seccomp") {
-        let file = File::open("/home/vasya/.jails/seccomp.bpf").expect("did not found seccomp.bpf file");
+        let file = std::env::var("WWRAP_SECCOMP_FILE")
+            .unwrap_or_else(|_err| "/home/vasya/.jails/seccomp.bpf".to_string());
+        let file = File::open(&file)
+            .unwrap_or_else(|err| panic!("Failed to open seccomp file {:?}, {}", &file, err));
         let file_descriptor: i32 = file.into_raw_fd();
         set_no_cloexec(file_descriptor).expect("failed to set_no_cloexec");
         command.arg("--seccomp");
